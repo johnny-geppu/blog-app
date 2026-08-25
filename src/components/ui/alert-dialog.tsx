@@ -1,3 +1,5 @@
+// shadcn/uiのコンポーネント置き場。
+
 "use client"
 
 import * as React from "react"

@@ -1,3 +1,5 @@
+// DBに最初から入れておくダミーデータを作るファイル。
+
 import { PrismaClient } from "@prisma/client";
 import * as bcypt from 'bcryptjs'
 

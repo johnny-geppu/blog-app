@@ -1,3 +1,5 @@
+// ヘッダーのReactコンポーネント。
+
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { Input } from "@base-ui/react"

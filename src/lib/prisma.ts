@@ -1,3 +1,11 @@
+// PrismaClientを使えるようにするためのファイル。
+
+// prisma.ts
+//    ↓
+// PrismaClientを用意
+//    ↓
+// // DBにアクセスするための窓
+
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -10,3 +18,10 @@ export const prisma =
 if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = prisma;
 }
+
+// prisma.post.findMany(...)
+
+// などを使えるようにする。
+
+// イメージとしては、
+

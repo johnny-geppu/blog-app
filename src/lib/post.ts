@@ -1,3 +1,5 @@
+// 公開されている記事をDBから取ってくる
+
 
 import { prisma } from "@/lib/prisma"
 export async function getPosts() {

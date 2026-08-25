@@ -1,3 +1,5 @@
+// ブログ記事に関するデータの型をここにまとめておく場所
+
 export type Post = {
     id: string
     title: string

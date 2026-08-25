@@ -1,3 +1,9 @@
+//DBの設計図
+//Userというテーブルにはこういうデータを持たせる」
+//「Postというテーブルにはこういうデータを持たせる」
+//「UserとPostはこういう関係
+
+
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -12,6 +18,7 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
 
 
 model User {

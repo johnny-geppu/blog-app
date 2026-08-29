@@ -1,7 +1,7 @@
 'use client'
 
 import { Input } from "@base-ui/react"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
@@ -16,10 +16,9 @@ export default function SearchBox() {
         }, 500)
         return () => clearTimeout(timer)
     },[search])
-
     useEffect(()=>{
         if(debouncedSearch.trim()){
-            router.push(`/?serch=${debouncedSearch.trim()}`)
+            router.push(`/?search=${debouncedSearch.trim()}`)
         }   else{
             router.push('/')
         }

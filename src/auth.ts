@@ -3,21 +3,19 @@
 // proxy = ログイン状態を確認するミドルウェア的なもの
 // auth.config = ログイン状態に応じたアクセスルール
 
-import NextAuth from 'next-auth';
-import { authConfig } from './auth.config';
-import Credentials from 'next-auth/providers/credentials';
-import { z } from 'zod';
-import { prisma } from './lib/prisma';
-import bcryptjs from 'bcryptjs';
-
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
+import Credentials from "next-auth/providers/credentials";
+import { z } from "zod";
+import { prisma } from "./lib/prisma";
+import bcryptjs from "bcryptjs";
 
 // メールアドレスからDB内のユーザーを取得する
 async function getUser(email: string) {
     return await prisma.user.findUnique({
-        where: { email: email }
+        where: { email: email },
     });
 }
-
 
 // Auth.jsの設定
 export const { auth, signIn, signOut, handlers } = NextAuth({
@@ -28,21 +26,18 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     providers: [
         // メールアドレス・パスワードによるログイン
         Credentials({
-
             // 入力された情報でログイン可能か判定する
             async authorize(credentials) {
-
                 // emailとpasswordの入力形式をZodでチェック
                 const parsedCredentials = z
                     .object({
                         email: z.string().email(),
-                        password: z.string().min(8)
+                        password: z.string().min(8),
                     })
                     .safeParse(credentials);
 
                 // 入力形式が正しい場合
                 if (parsedCredentials.success) {
-
                     // 入力されたemailとpasswordを取り出す
                     const { email, password } = parsedCredentials.data;
 
@@ -53,10 +48,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                     if (!user) return null;
 
                     // 入力されたpasswordとDBのハッシュ化済みpasswordを比較
-                    const passwordMatch = await bcryptjs.compare(
-                        password,
-                        user.password
-                    );
+                    const passwordMatch = await bcryptjs.compare(password, user.password);
 
                     // パスワードが一致すればログイン成功
                     if (passwordMatch) return user;

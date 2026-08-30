@@ -1,56 +1,86 @@
-// 「ログイン状態に応じて、どのページへのアクセスを許可するか」を設定するファイル
+
+// ログイン状態に応じて、各ページへのアクセスを制御する設定
 
 import type { NextAuthConfig } from 'next-auth';
 
 export const authConfig = {
 
-    // ログインページを /login に設定
+    // Auth.jsが使用するログインページを指定
     pages: {
         signIn: '/login',
     },
 
-    // ページにアクセスしていいかを判定する処理
     callbacks: {
+
+        // ページにアクセスするたびに実行され、
+        // 「このユーザーをこのページに通していいか」を判定する
         authorized({ auth, request: { nextUrl } }) {
 
-            // ユーザーがログインしているか確認
-            // !! で true / false に変換
+            // auth.user が存在する → ログイン済み
+            // auth.user が存在しない → 未ログイン
+            // !! を使って true / false に変換している
             const isLoggedIn = !!auth?.user;
 
-            // 現在アクセスしようとしているページが
-            // /dashboard または /manage か確認
+
+            // 今アクセスしようとしているページが
+            // /dashboard または /manage から始まるかを判定
+            //
+            // 例：
+            // /dashboard        → true
+            // /dashboard/posts  → true
+            // /manage           → true
+            // /login            → false
             const isOnDashboard =
                 nextUrl.pathname.startsWith('/dashboard') ||
                 nextUrl.pathname.startsWith('/manage');
 
-            // /dashboard または /manage にアクセスする場合
+
+            // ========================================
+            // ① /dashboard・/manage にアクセスした場合
+            // ========================================
             if (isOnDashboard) {
 
-                // ログイン済みならアクセス許可
-                if (isLoggedIn) return true;
+                // ログイン済みなら、そのままアクセスを許可
+                if (isLoggedIn) {
+                    return true;
+                }
 
-                // 未ログインならアクセス拒否
-                // → Auth.jsによってログインページへ誘導される
-                return false;
+                // 未ログインなら /login にリダイレクト
+                return Response.redirect(
+                    new URL('/login', nextUrl)
+                );
 
-                // ログイン済みなのに /login にアクセスした場合
+
+            // ========================================
+            // ② ログイン済みなのに /login にアクセスした場合
+            // ========================================
             } else if (
                 isLoggedIn &&
                 nextUrl.pathname === '/login'
             ) {
 
-                // /dashboard にリダイレクト
+                // すでにログインしているので、
+                // ログイン画面ではなく /dashboard にリダイレクト
                 return Response.redirect(
                     new URL('/dashboard', nextUrl)
                 );
             }
 
-            // それ以外のページはアクセス許可
+
+            // ========================================
+            // ③ それ以外のページ
+            // ========================================
+
+            // 特に制限しないのでアクセスを許可
             return true;
         },
     },
 
-    // ログイン方法はauth.ts側で設定するので、ここでは空
+
+    // 実際のログイン方法（Credentialsなど）は
+    // auth.ts 側で設定するため、ここでは空にしている
     providers: [],
 
-} satisfies NextAuthConfig; // Auth.jsの設定として正しい型かチェック
+} satisfies NextAuthConfig;
+// satisfies NextAuthConfig によって、
+// authConfig がAuth.jsの設定として正しい形になっているか型チェックする

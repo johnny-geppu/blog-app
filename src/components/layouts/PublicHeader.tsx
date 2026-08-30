@@ -9,7 +9,7 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import SearchBox from "../post/searchBox"
+import SearchBox from "../post/SearchBox"
 
 
 export default function PublicHeader() {

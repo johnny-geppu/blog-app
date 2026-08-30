@@ -6,13 +6,13 @@ import { useEffect, useState } from "react"
 
 
 export default function SearchBox() {
-    const [search, setsearch] = useState('')
-    const [debouncedSearch, setdebouncedSearch] = useState('')
+    const [search, setSearch] = useState('')
+    const [debouncedSearch, setDebouncedSearch] = useState('')
     const router = useRouter()
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setdebouncedSearch(search)
+            setDebouncedSearch(search)
         }, 500)
         return () => clearTimeout(timer)
     },[search])
@@ -30,7 +30,7 @@ export default function SearchBox() {
                 placeholder="記事を検索"
                 className="w-200px lg:w-300px"
                 value={search}
-                onChange={(e) => setsearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
             />
         </>
     )

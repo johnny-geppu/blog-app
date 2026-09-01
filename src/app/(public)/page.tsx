@@ -1,5 +1,3 @@
-
-
 import { getPost, getPosts, searchPost } from "@/lib/post"
 import PostCard from "@/components/post/PostCard"
 import { Post } from "@/types/post"

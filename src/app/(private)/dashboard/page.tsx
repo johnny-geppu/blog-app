@@ -5,6 +5,7 @@ import PostDropdownMenu from "@/components/post/PostDropdownMenu"
 import Link from "next/link"
 
 export default async function DashBoardPage() {
+    
     const session = await auth()
     const userId = session?.user?.id
     if (!session?.user?.email || !userId) {
